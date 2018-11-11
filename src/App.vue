@@ -1,9 +1,9 @@
 <template>
   <div id="app">
     <!--<div class="header">-->
-      <v-header></v-header>
+      <v-header :seller="seller"></v-header>
     <!--</div>-->
-    <div class="tab">
+    <div class="tab border-1px">
       <div class="tab-item">
         <router-link to="/goods">商品</router-link>
       </div>
@@ -21,19 +21,36 @@
 <script>
   import header from './components/header/header';
   export default {
+    data() {
+      return {
+        seller: {}
+      };
+    },
     components: {
       'v-header': header
+    },
+    mounted() {
+      this.getSellerData();
+    },
+    methods: {
+      getSellerData() {
+        this.$axios.get('/api/seller').then((res) => {
+          console.log('data === ' + JSON.stringify(res.data));
+          this.seller = res.data.data;
+        });
+      }
     }
   };
 </script>
-<style scoped lang="stylus">
+<style lang="stylus">
+  @import "common/stylus/mixin.styl";
  #app
   .tab
    display: flex
    width: 100%
    height: 40px
    line-height: 40px
-   border-bottom: 1px solid rgba(7,17,27,0.1)
+   border-1px(rgba(7,17,27,0.1))
    .tab-item
      flex: 1
      text-align: center

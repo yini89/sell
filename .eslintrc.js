@@ -28,6 +28,7 @@ module.exports = {
     'semi': ['error', 'always'],
     // "spaced-comment": [2, "always"],
     'indent': 0,
-    "quotes": 0
+    "quotes": 0,
+    "space-before-function-paren": 0
   }
 }
