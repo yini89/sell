@@ -35,7 +35,6 @@
     methods: {
       getSellerData() {
         this.$axios.get('/api/seller').then((res) => {
-          console.log('data === ' + JSON.stringify(res.data));
           this.seller = res.data.data;
         });
       }
