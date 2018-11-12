@@ -29,7 +29,7 @@
       <div class="background">
         <img :src="seller.avatar" alt="" width="100%" height="100%">
       </div>
-      <div v-if="detailShow" class="detail" transition="fade">
+      <div v-show="detailShow" class="detail">
         <div class="detail-wrapper clearfix">
           <div class="detail-main">
             <h1 class="name">{{seller.name}}</h1>
@@ -43,8 +43,8 @@
             </div>
             <ul v-if="seller.supports" class="supports">
               <li v-for="(item, index) in seller.supports" :key="index" class="support-item">
-                <span class="icon" :class="classMap[seller.supports[index].type]"></span>
-                <span class="text">{{seller.supports[index].description}}</span>
+                <span class="icon" :class="classMap[item.type]"></span>
+                <span class="text">{{item.description}}</span>
               </li>
             </ul>
             <div class="title">
@@ -209,14 +209,8 @@
       top: 0
       width: 100%
       height: 100%
+      background: rgba(7, 17, 17, 0.8)
       overflow: auto
-      transition: all 0.5s
-      &.fade-transition
-        opacity: 1
-        background: rgba(7, 17, 27, 0.8)
-      &.fade-enter,&.fade-leave
-        opacity: 0
-        background: rgba(7, 17, 27, 0)
       .detail-wrapper
         min-height: 100%
         width: 100%
