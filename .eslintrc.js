@@ -29,6 +29,7 @@ module.exports = {
     // "spaced-comment": [2, "always"],
     'indent': 0,
     "quotes": 0,
-    "space-before-function-paren": 0
+    "space-before-function-paren": 0,
+    "spaced-comment": 0
   }
 }
