@@ -29,19 +29,23 @@
                     <span class="now"><span class="uom">￥</span>{{food.price}}</span>
                     <span class="old" v-show="food.oldPrice"><span class="uom">￥</span>{{food.oldPrice}}</span>
                   </div>
+                  <div class="cartcontrol-wrapper">
+                    <cartcontrol :food="food"></cartcontrol>
+                  </div>
                 </div>
               </li>
             </ul>
           </li>
         </ul>
       </div>
-      <shopcart></shopcart>
+      <shopcart :delivery-price="seller.deliveryPrice" :min-price="seller.minPrice"></shopcart>
     </div>
 </template>
 
 <script>
   import BScroll from 'better-scroll';
   import shopcart from '../shopcart/shopcart';
+  import cartcontrol from '../cartcontrol/cartcontrol';
   export default {
     props: ['seller'],
     data() {
@@ -52,12 +56,14 @@
       };
     },
     components: {
-      shopcart
+      shopcart,
+      cartcontrol
     },
     created() {
       this.classMap = ['decrease', 'discount', 'special', 'invoice', 'guarantee'];
       this.$axios.get('/api/goods').then((res) => {
         this.goods = res.data.data;
+        // console.log('this.goods === ' + JSON.stringify(this.goods));
         this.$nextTick(() => {
           this._initScroll();
           this._getHeight();
@@ -81,7 +87,6 @@
         if (!event._constructed) {
           return;
         }
-        console.log('idx === ');
         let foodList = this.$refs.foodsWrapper.querySelectorAll('.food-list-hook');
         this.foodsScroll.scrollToElement(foodList[idx], 500);
       },
@@ -90,6 +95,7 @@
           click: true
         });
         this.foodsScroll = new BScroll(this.$refs.foodsWrapper, {
+          click: true,
           probeType: 3
         });
         this.foodsScroll.on('scroll', (pos) => {
@@ -181,6 +187,7 @@
           .icon
             flex: 0 0 57px
           .content
+            position: relative
             flex: 1
             margin-left: 10px
             .name
@@ -216,4 +223,8 @@
                   font-weight: normal
                   font-size: 10px
 
+            .cartcontrol-wrapper
+              position: absolute
+              right: 0
+              bottom: 12px
 </style>
