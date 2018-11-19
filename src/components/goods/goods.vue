@@ -29,8 +29,8 @@
                     <span class="now"><span class="uom">￥</span>{{food.price}}</span>
                     <span class="old" v-show="food.oldPrice"><span class="uom">￥</span>{{food.oldPrice}}</span>
                   </div>
-                  <div class="cartcontrol-wrapper">
-                    <cartcontrol :food="food"></cartcontrol>
+                  <div class="cartControl-wrapper">
+                    <cartControl :food="food"></cartControl>
                   </div>
                 </div>
               </li>
@@ -38,14 +38,14 @@
           </li>
         </ul>
       </div>
-      <shopcart :delivery-price="seller.deliveryPrice" :min-price="seller.minPrice"></shopcart>
+      <shopCart :delivery-price="seller.deliveryPrice" :min-price="seller.minPrice"></shopCart>
     </div>
 </template>
 
 <script>
   import BScroll from 'better-scroll';
-  import shopcart from '../shopcart/shopcart';
-  import cartcontrol from '../cartcontrol/cartcontrol';
+  import shopCart from '../shopcart/shopcart';
+  import cartControl from '../cartcontrol/cartcontrol';
   export default {
     props: ['seller'],
     data() {
@@ -56,8 +56,8 @@
       };
     },
     components: {
-      shopcart,
-      cartcontrol
+      shopCart,
+      cartControl
     },
     created() {
       this.classMap = ['decrease', 'discount', 'special', 'invoice', 'guarantee'];
@@ -187,7 +187,6 @@
           .icon
             flex: 0 0 57px
           .content
-            position: relative
             flex: 1
             margin-left: 10px
             .name
@@ -223,7 +222,7 @@
                   font-weight: normal
                   font-size: 10px
 
-            .cartcontrol-wrapper
+            .cartControl-wrapper
               position: absolute
               right: 0
               bottom: 12px
