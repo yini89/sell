@@ -30,7 +30,7 @@
                     <span class="old" v-show="food.oldPrice"><span class="uom">￥</span>{{food.oldPrice}}</span>
                   </div>
                   <div class="cartControl-wrapper">
-                    <cartControl :food="food"></cartControl>
+                    <cartControl @cartAdd="_drop" :food="food"></cartControl>
                   </div>
                 </div>
               </li>
@@ -38,7 +38,7 @@
           </li>
         </ul>
       </div>
-      <shopCart :delivery-price="seller.deliveryPrice" :min-price="seller.minPrice"></shopCart>
+      <shopCart ref="shopcart" :delivery-price="seller.deliveryPrice" :min-price="seller.minPrice"></shopCart>
     </div>
 </template>
 
@@ -52,7 +52,8 @@
       return {
         goods: [],
         heightList: [],
-        scrollY: 0
+        scrollY: 0,
+        target: null
       };
     },
     components: {
@@ -89,6 +90,10 @@
         }
         let foodList = this.$refs.foodsWrapper.querySelectorAll('.food-list-hook');
         this.foodsScroll.scrollToElement(foodList[idx], 500);
+      },
+      _drop(target) {
+        // console.log('goods ---- target === ' + target);
+        this.$refs.shopcart.drop(target);
       },
       _initScroll() {
         this.menuScroll = new BScroll(this.$refs.menuWrapper, {
