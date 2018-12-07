@@ -1,25 +1,21 @@
 <template>
   <div class="cartControl">
     <transition name="move">
-      <div class="move-wrapper" v-if="show">
-        <div class="cart-decrease" v-show="food.count>0" @click="decreaseCart">
-          <span class="inner icon-remove_circle_outline"></span>
-        </div>
-        <div class="cart-count" v-show="food.count>0">{{food.count}}</div>
+      <div class="cart-decrease" v-show="food.count>0" @click.stop.prevent="decreaseCart">
+        <span class="inner icon-remove_circle_outline"></span>
       </div>
     </transition>
-    <div class="cart-add" @click="addCart">
+    <div class="cart-count" v-show="food.count>0">{{food.count}}</div>
+    <div class="cart-add" @click.stop.prevent="addCart">
       <span class="inner icon-add_circle"></span>
     </div>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
-  import Vue from 'vue';
   export default {
     data() {
       return {
-        show: false
       };
     },
     props: {
@@ -32,9 +28,8 @@
         if (!event._constructed) {
           return;
         }
-        this.show = true;
         if (!this.food.count) {
-          Vue.set(this.food, 'count', 1);
+          this.$set(this.food, 'count', 1);
         } else {
           this.food.count++;
         }
@@ -47,9 +42,6 @@
         if (this.food.count) {
           this.food.count--;
         }
-        if (this.food.count < 1) {
-          this.show = false;
-        }
       }
     }
   };
@@ -58,34 +50,32 @@
 <style scoped lang="stylus">
   .cartControl
     font-size: 0
-    .move-enter-active, .move-leave-active
-      transition: all .5s
-      .inner
-        transition: all .5s
-        transform: rotate(0)
-    .move-enter, .move-leave-active
-      opacity: 0
-      transform: translate3d(24px, 0, 0)
-      .inner
-        transform: rotate(180deg)
-    .move-wrapper
+    .cart-decrease
       display: inline-block
-      .cart-decrease
-        display: inline-block
-        padding: 6px
+      padding: 6px
+      &.move-enter-active, &.move-leave-active
+        transition: all 0.4s linear
+        transform: translate3d(0, 0, 0)
         .inner
-          display: inline-block
-          line-height: 24px
-          font-size: 24px
-          color: rgb(0, 160, 220)
-      .cart-count
+          transition: all 0.4s
+          transform: rotate(0)
+      &.move-enter, &.move-leave-to
+        transform: translate3d(24px, 0, 0)
+        .inner
+          transform: rotate(180deg)
+      .inner
         display: inline-block
-        vertical-align: top
         line-height: 24px
-        padding-top: 6px
-        font-size: 10px
-        text-align: center
-        color: rgb(147, 153, 159)
+        font-size: 24px
+        color: rgb(0, 160, 220)
+    .cart-count
+      display: inline-block
+      vertical-align: top
+      line-height: 24px
+      padding-top: 6px
+      font-size: 10px
+      text-align: center
+      color: rgb(147, 153, 159)
     .cart-add
       display: inline-block
       padding: 6px
