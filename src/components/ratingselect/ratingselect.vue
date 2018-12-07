@@ -1,9 +1,9 @@
 <template>
   <div class="rating-select">
     <div class="rating-type border-1px">
-      <span :class="{active: selectType === 2}" class="block positive" @click="select(2, $event)">{{desc.all}}<span class="count">57</span></span>
-      <span :class="{active: selectType === 0}" class="block positive" @click="select(0, $event)">{{desc.positive}}<span class="count">50</span></span>
-      <span :class="{active: selectType === 1}" class="block negative" @click="select(1, $event)">{{desc.negative}}<span class="count">7</span></span>
+      <span :class="{active: selectType === 2}" class="block positive" @click="select(2, $event)">{{desc.all}}<span class="count">{{ratings.length}}</span></span>
+      <span :class="{active: selectType === 0}" class="block positive" @click="select(0, $event)">{{desc.positive}}<span class="count">{{positives.length}}</span></span>
+      <span :class="{active: selectType === 1}" class="block negative" @click="select(1, $event)">{{desc.negative}}<span class="count">{{negatives.length}}</span></span>
     </div>
     <p class="switch" :class="{on: onlyContent}" @click="toggle">
       <span class="icon-check_circle"></span>只看有内容的评价
@@ -44,6 +44,18 @@
             negative: '不满意'
           };
         }
+      }
+    },
+    computed: {
+      positives() {
+        return this.ratings.filter((item) => {
+          return item.rateType === 0;
+        });
+      },
+      negatives() {
+        return this.ratings.filter((item) => {
+          return item.rateType === 1;
+        });
       }
     },
     methods: {

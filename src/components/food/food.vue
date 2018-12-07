@@ -33,13 +33,13 @@
           <h1 class="title">商品评价</h1>
           <ratingSelect @changeSelectType="changeSelectType" @toggleOnlyContent="toggleOnlyContent" :ratings="food.ratings" :selectType="selectType" :onlyContent="onlyContent" :desc="desc"></ratingSelect>
           <div class="rating-wrapper">
-            <ul>
-              <li v-show="food.ratings && food.ratings.length" class="rating-item border-1px" v-for="(item, index) in food.ratings" :key="index">
+            <ul v-show="food.ratings && food.ratings.length">
+              <li v-show="needShow(item.rateType, item.text)" class="rating-item border-1px" v-for="(item, index) in food.ratings" :key="index">
                 <div class="user">
                   <span class="name">{{item.username}}</span>
                   <img :src="item.avatar" alt="" width="12" height="12">
                 </div>
-                <p class="time">{{item.rateTime}}</p>
+                <p class="time">{{item.rateTime | formatDate}}</p>
                 <p class="text">
                   <span :class="{'icon-thumb_up': item.rateType === 0, 'icon-thumb_down': item.rateType === 1}"></span>{{item.text}}
                 </p>
@@ -56,6 +56,7 @@
 <script>
   import cartControl from '../cartcontrol/cartcontrol';
   import BScroll from 'better-scroll';
+  import {formatDate} from "../../common/js/date";
   import split from '../split/split';
   import ratingSelect from '../ratingselect/ratingselect';
   // const POSITIVE = 0;
@@ -99,6 +100,16 @@
           }
         });
       },
+      needShow(type, text) {
+        if (this.onlyContent && !text) {
+          return false;
+        }
+        if (this.selectType === ALL) {
+          return true;
+        } else {
+          return type === this.selectType;
+        }
+      },
       addFirst(event) {
         if (!event._constructed) {
           return;
@@ -118,6 +129,12 @@
       },
       back() {
         this.isShow = false;
+      }
+    },
+    filters: {
+      formatDate(time) {
+        let date = new Date(time);
+        return formatDate(date, 'yyyy-MM-dd hh:mm');
       }
     }
   };
@@ -249,13 +266,15 @@
             top: 12px
             font-size: 0
             .name
+              display: inline-block
+              vertical-align: top
               margin-right: 6px
               line-height: 12px
               font-size: 10px
               color: rgb(147, 153, 159)
             .avatar
-              display: inline-block
-              vertical-align: top
+              -webkit-border-radius: 50%
+              -moz-border-radius: 50%
               border-radius: 50%
           .time
             line-height: 12px
@@ -275,4 +294,9 @@
               color: rgb(0, 160, 220)
             .icon-thumb_down
               color: rgb(147, 153, 159)
+        .no-rating
+          padding: 16px 0
+          font-size: 12px
+          color: rgb(147, 153, 159)
+          text-align: center
 </style>
