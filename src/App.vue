@@ -20,10 +20,18 @@
 
 <script>
   import header from './components/header/header';
+  import {urlParse} from "./common/js/util";
+
   export default {
     data() {
       return {
-        seller: {}
+        seller: {
+          id: (() => {
+            let queryParm = urlParse();
+            console.log(queryParm);
+            return queryParm.id;
+          })()
+        }
       };
     },
     components: {
@@ -34,8 +42,9 @@
     },
     methods: {
       getSellerData() {
-        this.$axios.get('/api/seller').then((res) => {
-          this.seller = res.data.data;
+        this.$axios.get('/api/seller?id' + this.seller.id).then((res) => {
+          // this.seller = res.data.data;
+          this.seller = Object.assign({}, this.seller, res.data.data);
         });
       }
     }
